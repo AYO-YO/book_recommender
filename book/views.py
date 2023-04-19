@@ -9,19 +9,15 @@ from django.contrib.auth.decorators import login_required
 import MeCab
 import pandas as pd
 from django.views.decorators.csrf import csrf_exempt
-from gensim.models.doc2vec import Doc2Vec, TaggedDocument
-import re
 from datetime import datetime
 
 # Create your views here.
 from book.models import BookData, Like, Review
-from django.views.decorators.http import require_POST
 import requests
 from bs4 import BeautifulSoup
 
 from user.models import UserModel
 
-df = pd.DataFrame(list(BookData.objects.all().values()))
 mecab = MeCab.Tagger()
 
 
@@ -63,6 +59,7 @@ def get_bestseller_list():
 
 
 def get_recommend_list(request, id):
+    df = pd.DataFrame(list(BookData.objects.all().values()))
     user = request.user.is_authenticated
     if not user:
         return redirect('/sign-in')

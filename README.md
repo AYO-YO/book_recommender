@@ -2,7 +2,7 @@
 
 ![book_0](https://user-images.githubusercontent.com/53362965/185870570-11f9499e-091d-47f4-af1f-ddc9b082ce7b.png)
 
-### 시연 영상 : https://www.youtube.com/channel/UCJCKnRgvUERuV6Zz9WCL7nw
+### 演示视频： https://www.youtube.com/channel/UCJCKnRgvUERuV6Zz9WCL7nw
 <br>
 <hr>
 <br>
@@ -10,7 +10,7 @@
 💡 **프로젝트명**
 
 
-- 이책어때 (도서 추천 사이트)
+- 这本书怎么样（图书推荐网站）
 
 <br>
 

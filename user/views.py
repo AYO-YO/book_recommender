@@ -10,9 +10,6 @@ from django.contrib.auth import get_user_model  # 사용자가 있는지 검사�
 from django.contrib import auth  # 사용자 auth 기능
 from django.contrib.auth.decorators import login_required
 
-
-
-
 def sign_up_view(request):
     first_like=BookData.objects.filter(master_seq__range=(1,70))
 
