@@ -70,7 +70,7 @@ def get_recommend_list(request, id):
     profile_book = Like.objects.filter(user_id=user_id)
     model = gensim.models.Doc2Vec.load('book/doc2vec/model.doc2vec')
 
-    # 선택한 도서 토큰화 标记选定的图书
+    # 标记选定的图书
     tmp = mecab.parse(selected_book.title).split()
     tmp.append('|')
     tmp2 = mecab.parse(selected_book.description).split()
@@ -87,7 +87,7 @@ def get_recommend_list(request, id):
 
     for index, similarity in most_similar_docs:
 
-        # 자기 자신은 추천 도서에서 제외 自己被排除在推荐书之外
+        # 自己被排除在推荐书之外
         if df['master_seq'][index] == selected_book.master_seq:
             continue
 
@@ -126,7 +126,7 @@ def get_book(request):
 
         if search_text != '':
             if len(search_text) < 2:
-                messages.warning(request, "검색어는 최소 2자 이상이여야 합니다.")
+                messages.warning(request, "搜索词必须至少包含 2 个字符。")
                 return redirect('/book')
 
             result_list = book_list.filter(
@@ -166,7 +166,7 @@ def get_book(request):
 
 # def detail_book(request, id):
 #     # book = (bookDB).objects.get(id=id)
-#     book = {'title': '제목 标题' + str(id), 'author': '저자 作者' + str(id), 'publisher': '출판사 出版商' + str(id), 'desc': '내용 内容' + str(id)}
+#     book = {'title': '标题' + str(id), 'author': '作者' + str(id), 'publisher': '出版商' + str(id), 'desc': '内容' + str(id)}
 #     return render(request, 'detail.html', {'book': book})
 def detail_book(request, id):
     user = request.user.is_authenticated
@@ -239,11 +239,11 @@ def write_review(request, id):
             RV.save()
 
             if RV:
-                messages.warning(request, "리뷰 작성 성공 成功撰写评论")
+                messages.warning(request, "成功撰写评论")
 
             return redirect('/book/' + str(current_Book.id))
         else:
-            messages.warning(request, "로그인이 필요합니다 需要登录")
+            messages.warning(request, "需要登录")
             return redirect('sign-in')
 
 
@@ -252,7 +252,7 @@ def delete_review(request, id):
     rv = Review.objects.get(id=id)
     page = rv.book_master_seq.id
     rv.delete()
-    messages.warning(request, "리뷰를 삭제했습니다 已删除评论")
+    messages.warning(request, "已删除评论")
     return redirect('/book/' + str(page))
 
 
@@ -270,7 +270,7 @@ def update(request, id):
     page = review.book_master_seq.id
     review.content = request.POST.get('my-review')
     review.save()
-    messages.warning(request, "리뷰를 수정했습니다 已修改评论")
+    messages.warning(request, "已修改评论")
     return redirect('/book/' + str(page))
 
 
@@ -284,12 +284,12 @@ def likes(request, book_id):
                 book=book
             )
             like.delete()
-            messages.warning(request, "관심 취소 되었습니다 兴趣已取消")
+            messages.warning(request, "兴趣已取消")
             return redirect('/book/' + str(book.id))
         else:
             like = Like(book=book, user=request.user)
             like.save()
-            messages.warning(request, "관심 등록 되었습니다 兴趣已注册")
+            messages.warning(request, "兴趣已注册")
             return redirect('/book/' + str(book.id))
 
     return redirect('/sign-in')
@@ -324,7 +324,7 @@ def insert_crawling_data(request):
             best_pub_day = best_pub_day.strip().replace('.', '-').replace('\t', '').replace('\r', '').replace('\n', '')
             best_price = books[i].select_one(
                 'div.thumb_cont > div.info_area > div.detail > div.price > strong.sell_price').text
-            best_price = best_price.replace('원 圆圈', '').replace(',', '')
+            best_price = best_price.replace('圆圈', '').replace(',', '')
             best_description = books[i].select_one('div.thumb_cont > div.info_area > div.detail > div.info > span').text
             bestseller.append(
                 {'book_number': book_number, 'img': best_image, 'title': best_title, 'author': best_author,

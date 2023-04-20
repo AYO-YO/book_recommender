@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
 {#{% load static %}#}
-{% block head %} 도서 상세 페이지 {% endblock %}
+{% block head %} 图书详细信息页面 {% endblock %}
 {% block content %}
     <div class="book-info">
         <div class="book_img">
@@ -10,12 +10,12 @@
         <form class="my-5 mx-auto" action="/book" method="POST" style="max-width: 30rem;">
             {% csrf_token %}
             <div class="d-flex justify-content-between">
-                <button class="btn btn-info" action="/get_book_detail">구매하기</button>
-                <button class="btn btn-info" action="/like_book">관심등록</button>
+                <button class="btn btn-info" action="/get_book_detail">购买</button>
+                <button class="btn btn-info" action="/like_book">注册兴趣</button>
             </div>
         </form>
     </div>
-    {#사용자 리뷰#}
+    {#用户评论#}
     <div>
 
     </div>
