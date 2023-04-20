@@ -16,6 +16,9 @@ class BookData(models.Model):
     description = models.CharField(max_length=100, default='无')
     pub_date_2 = models.DateField(blank=True, default='', null=True)
 
+    def __str__(self):
+        return f"{self.id}《{self.title}》-{self.author}"
+
 
 class Like(models.Model):
     class Meta:
