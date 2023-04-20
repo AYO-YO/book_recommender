@@ -10,10 +10,10 @@ class BookData(models.Model):
     master_seq = models.IntegerField(blank=False, null=False)
     title = models.CharField(max_length=100)
     author = models.CharField(max_length=100)
-    publisher = models.CharField(max_length=100, default='미정')
-    price = models.CharField(max_length=100, default='없음')
+    publisher = models.CharField(max_length=100, default='未定')
+    price = models.CharField(max_length=100, default='无')
     img_url = models.CharField(max_length=100, default='https://via.placeholder.com/150')
-    description = models.CharField(max_length=100, default='없음')
+    description = models.CharField(max_length=100, default='无')
     pub_date_2 = models.DateField(blank=True, default='', null=True)
 
 

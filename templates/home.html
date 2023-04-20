@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    홈
+    首页
 {% endblock %}
 {% load static %}
 {% block style %}
@@ -28,11 +28,11 @@
             if ($('#right-area').attr('class') == 'col-md-6') {
                 $('#left-area').hide()
                 $('#right-area').attr('class', 'col-md-12')
-                $('#set_recommend_btn').text("관심 목록 보이기")
+                $('#set_recommend_btn').text("显示监视列表")
             } else {
                 $('#right-area').attr('class', 'col-md-6')
                 $('#left-area').show()
-                $('#set_recommend_btn').text("관심 목록 숨기기")
+                $('#set_recommend_btn').text("隐藏监视列表")
             }
         }
 
@@ -48,7 +48,7 @@
         {% endfor %}
         <div class="container timeline-container" style="">
             <div class="bestseller-area">
-                <p class="top-title">베스트 셀러 70</p>
+                <p class="top-title">畅销书 70</p>
                 <div class="bestseller">
                     {% for bestseller in bestseller_list %}
                         <div class="bestseller-book">
@@ -76,7 +76,7 @@
                 <div>
                     <form method="get" action="{% url 'get_book' %}" style="width:100%">
                         <div class="search">
-                            <input type="text" class="searchTerm" placeholder="책 제목 또는 저자" id="search_text"
+                            <input type="text" class="searchTerm" placeholder="书名或作者" id="search_text"
                                    name="search_text">
                             <button type="submit" class="searchButton">
                                 <i class="fa fa-search"></i>
@@ -86,7 +86,7 @@
                     <div>
                         <button id="set_recommend_btn" class="w-btn-outline w-btn-skin-outline" type="button"
                                 style="margin-bottom: 30px" onclick="set_recommend_list()">
-                            관심 목록 숨기기
+                            隐藏监视列表
                         </button>
                     </div>
                 </div>
@@ -94,8 +94,8 @@
                 <div id="left-area" class="col-md-6">
                     <div class="left-main" style="">
                         <div class="top-area" style="">
-                            <p class="top-title">내 관심 도서</p>
-                            <p style="font-size: smaller; color: gray">체크 버튼 클릭 시 해당 도서와 연관된 추천 도서 표시</p>
+                            <p class="top-title">我感兴趣的书</p>
+                            <p style="font-size: smaller; color: gray">单击复选按钮时显示与该书相关的推荐书</p>
                         </div>
                         <div class="body-area">
                             <div class="book-area" id="book-area" name="book-area"
@@ -152,7 +152,7 @@
                                 {% endfor %}
                                 {% if profile_book.has_next %}
                                     <a class="infinite-more-link"
-                                       href="?search_text={{ search_text }}&page={{ all_book.next_page_number }}">더 보기
+                                       href="?search_text={{ search_text }}&page={{ all_book.next_page_number }}">查看更多
                                         ...</a>
                                 {% endif %}
                                 <div class="loading" style="display: none;">
@@ -181,12 +181,12 @@
                     <div class="right-main" style="">
                         <div class="top-area" style="">
                             {% if request.resolver_match.view_name == 'get_recommend_list' %}
-                                <p class="top-title">추천 도서 100</p>
+                                <p class="top-title">推荐阅读 100</p>
                                 <p style="font-size: smaller; color: gray"><span
-                                        style="font-weight: bold; color: black">선택 :</span> {{ selected_book }}</p>
+                                        style="font-weight: bold; color: black">选择 :</span> {{ selected_book }}</p>
                             {% else %}
-                                <p class="top-title">전체 도서</p>
-                                <p style="font-size: smaller; color: gray">총 {{ total_book }} 권의 도서</p>
+                                <p class="top-title">全书</p>
+                                <p style="font-size: smaller; color: gray">枪 {{ total_book }} 书的书</p>  {# TODO #}
                             {% endif %}
                         </div>
                         <div class="body-area">
@@ -244,7 +244,7 @@
                                 {% endfor %}
                                 {% if all_book.has_next %}
                                     <a class="infinite-more-link"
-                                       href="?search_text={{ search_text }}&page={{ all_book.next_page_number }}">더 보기
+                                       href="?search_text={{ search_text }}&page={{ all_book.next_page_number }}">查看更多
                                         ...</a>
                                 {% endif %}
                                 <div class="loading" style="display: none;">

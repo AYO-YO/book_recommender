@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    도서 상세 정보
+    书籍详情
 {% endblock %}
 {% load static %}
 {% block style %}
@@ -83,10 +83,10 @@
                         <div class="book-info" style="display: flex; flex-direction: column; margin-top: 20px">
                             <div class="book-info-title mt-3 custom-break-word" style="width: 100%">
                                 <span style="font-size: 22px; font-weight: bold">{{ book_title }}</span><br>
-                                <span style="font-size: 18px; font-weight: lighter"> - 부제 : {{ book_sectitle }}</span>
+                                <span style="font-size: 18px; font-weight: lighter"> - 书名 : {{ book_sectitle }}</span>
                             </div>
                             <div class="book-info-author">
-                                <span style="font-size: 15px"> 저자 : {{ book.author }} | 출판사 : {{ book.publisher }}</span>
+                                <span style="font-size: 15px"> 作者 : {{ book.author }} | 出版社 : {{ book.publisher }}</span>
                             </div>
                             <div class="book-info-desc">
                                 <span style="font-size: 13px"> {{ book.description }} </span>
@@ -98,9 +98,9 @@
                 </div>
             </div>
             <div class="footer-area" style="margin-top: 50px">
-                <h5>사용자 리뷰</h5>
+                <h5>用户评论</h5>
                 <hr>
-                <!-- 반복문이 들어 갈 곳 -->
+                <!-- 循环会去哪里 -->
                 {% for rv in reviews %}
                     <div class="row">
                         <div class="col-md-12">
@@ -108,17 +108,17 @@
                                 <div class="media-body">
                                     <h5 class="mt-0"> {{ rv.content }} </h5>
                                     <span> {{ rv.writer }} </span>
-                                    <span> - {{ rv.created_at | timesince }} 전</span>
+                                    <span> - {{ rv.created_at | timesince }} 全</span>
                                 </div>
                                 {% if rv.writer == user %}
                                     <div style="float: right">
                                         <a href="/book/review/delete/{{ rv.id }}">
-                                            <span class="badge bg-danger" style="background-color: #FF4E10!important;">삭제</span>
+                                            <span class="badge bg-danger" style="background-color: #FF4E10!important;">删除</span>
                                         </a>
                                     </div>
                                     <div style="float: right; margin-right:5px;">
                                         <a href="/book/review/edit/{{ rv.id }}">
-                                            <span class="badge bg-danger" style="background-color: #00B4CC!important;">수정</span>
+                                            <span class="badge bg-danger" style="background-color: #00B4CC!important;">更正</span>
                                         </a>
                                     </div>
                                 {% endif %}
@@ -130,8 +130,8 @@
                 <form class="input-group mb-3" action="/book/review/{{ book.id }}" method="post">
                     {% csrf_token %}
                     <textarea class="form-control" cols="30" rows="5" id='my-review' name='my-review'
-                              placeholder="리뷰를 작성 해 주세요" style="resize:none;"></textarea>
-                    <button class="btn btn-outline-secondary" type="submit">작성</button>
+                              placeholder="请填写评论" style="resize:none;"></textarea>
+                    <button class="btn btn-outline-secondary" type="submit">提交</button>
                 </form>
             </div>
         </div>

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    프로필
+    轮廓
 {% endblock %}
 
 {% load static %}
@@ -20,7 +20,7 @@
             <div class="profile_top-area" id="profile_top-area" name="profile_top-area" style="">
                 {% for my_follow in profile_user %}
                     <div class="profile_follower">
-                        팔로워
+                        追随者
                         <a style="text-decoration: none; color: black" href="/user">
                             <div class="follower_num">
                                 {{ my_follow.followee.count }}
@@ -45,7 +45,7 @@
                 </div>
                 {% for my_follow in profile_user %}
                     <div class="profile_following">
-                        팔로잉
+                        下列的
                         <a style="text-decoration: none; color: black" href="/user">
                             <div class="following_num">
                                 {{ my_follow.follow.count }}
@@ -63,7 +63,7 @@
                     </button>
                 </div>
                 <div class="profile_book_box">
-                    {#책 반복문 들어갈 자리#}
+                    {#重复书籍的地方#}
                     {% for my_book in profile_book %}
                         <div class="profile_book">
                             <div class="profile_book_image_box">
@@ -91,7 +91,7 @@
                     </button>
                 </div>
                 <div class="profile_review_box">
-                    {#리뷰 반복문 들어갈 자리#}
+                    {#审查迭代的空间#}
                     {% for my_review in profile_review %}
                         <div class="profile_review">
                             <div class="profile_review_title">

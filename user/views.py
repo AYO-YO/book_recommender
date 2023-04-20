@@ -5,19 +5,19 @@ from book.models import Like, Review, BookData
 from .models import UserModel
 from django.http import HttpResponse
 # user/views.py
-from django.contrib.auth import get_user_model  # 사용자가 있는지 검사하는 함수
+from django.contrib.auth import get_user_model  # 사용자가 있는지 검사하는 함수 检查用户是否存在的函数
 # user/views.py
-from django.contrib import auth  # 사용자 auth 기능
+from django.contrib import auth  # 사용자 auth 기능 用户自上而下功能
 from django.contrib.auth.decorators import login_required
 
 def sign_up_view(request):
     first_like=BookData.objects.filter(master_seq__range=(1,70))
 
-    if request.method == 'GET':
-        user = request.user.is_authenticated  # 로그인 된 사용자가 요청하는지 검사
-        if user:  # 로그인이 되어있다면
+    if request.method == 'GET': 
+        user = request.user.is_authenticated  # 로그인 된 사용자가 요청하는지 검사 检查登录用户是否请求
+        if user:  # 로그인이 되어있다면 如果您已登录
             return redirect('/')
-        else:  # 로그인이 되어있지 않다면
+        else:  # 로그인이 되어있지 않다면 如果您没有登录
 
             return render(request, 'signup.html', {'bestseller':first_like})
 
@@ -27,18 +27,18 @@ def sign_up_view(request):
         password2 = request.POST.get('password2', '')
         my_book = request.POST.get('book', '')
         if password != password2:
-            # 패스워드가 다르다는 에러가 필요합니다. {'error':'에러문구'} 를 만들어서 전달합니다.
-            return render(request, 'signup.html', {'bestseller':first_like, 'error': '패스워드를 확인 해 주세요!'})
+            # 패스워드가 다르다는 에러가 필요합니다. {'error':'에러문구'} 를 만들어서 전달합니다. 需要错误，因为密码不同。{“error”：创建并传递“错误语句”}
+            return render(request, 'signup.html', {'bestseller':first_like, 'error': '패스워드를 확인 해 주세요 请检查密码！!'})
         else:
             if username == '' or password == '':
-                # 사용자 저장을 위한 username과 password가 필수라는 것을 얘기 해 줍니다.
-                return render(request, 'signup.html', {'bestseller':first_like, 'error': '사용자 이름과 패스워드는 필수 값 입니다'})
+                # 사용자 저장을 위한 username과 password가 필수라는 것을 얘기 해 줍니다. 用户名和密码对于用户存储是必需的。
+                return render(request, 'signup.html', {'bestseller':first_like, 'error': '사용자 이름과 패스워드는 필수 값 입니다 用户名和密码是必需的'})
 
 
             exist_user = get_user_model().objects.filter(username=username)
             if exist_user:
                 return render(request, 'signup.html',
-                              {'error': '사용자가 존재합니다.'})  # 사용자가 존재하기 때문에 사용자를 저장하지 않고 회원가입 페이지를 다시 띄움
+                              {'error': '사용자가 존재합니다. 用户存在'})  # 사용자가 존재하기 때문에 사용자를 저장하지 않고 회원가입 페이지를 다시 띄움 重新浮出会员页面，而不保存用户，因为用户存在
             else:
                 UserModel.objects.create_user(username=username, password=password)
 
@@ -50,7 +50,8 @@ def sign_up_view(request):
 
                 first_book.save()
 
-                return redirect('/sign-in')  # 회원가입이 완료되었으므로 로그인 페이지로 이동
+                return redirect('/sign-in')  # 회원가입이 완료되었으므로 로그인 페이지로 이동 注册完成后，转到登录页面
+
 
 
 # user/views.py
@@ -60,13 +61,13 @@ def sign_in_view(request):
         username = request.POST.get('username', "")
         password = request.POST.get('password', "")
 
-        me = auth.authenticate(request, username=username, password=password)  # 사용자 불러오기
-        if me is not None:  # 저장된 사용자의 패스워드와 입력받은 패스워드 비교
+        me = auth.authenticate(request, username=username, password=password)  # 사용자 불러오기 载入用户
+        if me is not None:  # 저장된 사용자의 패스워드와 입력받은 패스워드 비교 将保存用户的密码与输入的密码进行比较
             auth.login(request, me)
             return redirect('/')
         else:
 
-            return render(request,'signin.html',{'error':'유저이름 혹은 패스워드를 확인 해 주세요'})  # 로그인 실패
+            return render(request,'signin.html',{'error':'유저이름 혹은 패스워드를 확인 해 주세요 请检查您的用户名或密码'})  # 로그인 실패 登录失败
 
 
     elif request.method == 'GET':
@@ -96,12 +97,12 @@ def user_follow(request, id):
 
 def user_view(request):
     if request.method == 'GET':
-        # 사용자를 불러오기, exclude와 request.user.username 를 사용해서 '로그인 한 사용자'를 제외하기
+        # 사용자를 불러오기, exclude와 request.user.username 를 사용해서 '로그인 한 사용자'를 제외하기 载入用户，使用 exclude 和 request.user.username 排除“已登录的用户”
         user_list = UserModel.objects.all().exclude(username=request.user.username)
         return render(request, 'user_list.html', {'user_list': user_list})
 
 
-# 프로필
+# 프로필 简介
 
 # def profile_view(request, id):
 #     if id is None:

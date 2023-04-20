@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    로그인
+    登录
 {% endblock %}
 {% load static %}
 {% block style %}
@@ -21,10 +21,10 @@
                 <form class="form-area" action="/sign-in/" method="post">
                     {% csrf_token %}
                     <div class="form-group mt-2 mb-2">
-                        <input type="text" class="form-control" id="username" name="username" placeholder="아이디">
+                        <input type="text" class="form-control" id="username" name="username" placeholder="ID">
                     </div>
                     <div class="form-group mt-2 mb-2">
-                        <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="密码">
                     </div>
 
                     {% if error %}
@@ -33,10 +33,10 @@
                         </div>
                     {% endif %}
                     <div class="button_signin" style="text-align: center">
-                        <button type="submit" class="btn_login">로그인</button>
+                        <button type="submit" class="btn_login">登录</button>
                         {% load socialaccount %}
-                        <a class="btn_naver" href=" {% provider_login_url 'naver' %}">네이버 로그인</a>
-                        <a href="/sign-up" class="btn_to_signup">회원가입 페이지로</a>
+                        <a class="btn_naver" href=" {% provider_login_url 'naver' %}">登录</a>
+                        <a href="/sign-up" class="btn_to_signup">跳转到会员注册页面</a>
                     </div>
                 </form>
 

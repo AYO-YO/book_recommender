@@ -11,7 +11,7 @@
 }
 
 
-/*프로필 영역*/
+/*配置文件区域*/
 .profile_top-area{
     display: flex;
     flex-direction: row;
@@ -98,7 +98,7 @@
     cursor: pointer;
 }
 
-/*책 영역*/
+/* 图书区 */
 .profile_book-area{
     display: flex;
     flex-direction: column;
@@ -254,7 +254,7 @@
 
 
 
-/*리뷰 영역*/
+/*评论区域*/
 .profile_review-area{
     display: flex;
     flex-direction: column;

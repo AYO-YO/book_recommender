@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    친구
+    朋友
 {% endblock %}
 
 {% load static %}
@@ -16,7 +16,7 @@
 {% block content %}
     <div class="container timeline-container">
         <div class="row">
-            <!-- 왼쪽 컬럼 -->
+            <!-- 左栏 -->
             <div class="col-md-3">
                 <div class="hi">
                     <div class="card-body">
@@ -30,7 +30,7 @@
                     <button class="following_count"> Following : {{ user.follow.count }} </button>
                 </div>
             </div>
-            <!-- 오른 쪽 컬럼-->
+            <!-- 右栏-->
             <div class="col-md-7">
                 {#                <div class="row">#}
                 {#                    <div class="alert alert-success" role="alert">#}
@@ -39,7 +39,7 @@
                 {#                    </div>#}
                 {#                </div>#}
                 <div class="row">
-                    <!-- 사용자 리스트 반복문 -->
+                    <!-- 用户列表循环 -->
                     {% for ul in user_list %}
                         <div class="card">
                             <div class="card-body" style="display: flex; flex-direction: column">
@@ -52,7 +52,7 @@
                                 </h5>
                                 <div class="count_button_box">
                                     <div class="count_button">
-                                        <p class="btn_text">팔로잉</p>
+                                        <p class="btn_text">下列的</p>
                                         <div class="count_button_two">
                                             <p class="btn_text_two">{{ ul.follow.count }}</p>
                                         </div>
@@ -71,7 +71,7 @@
                                         </a>
                                     {% endif %}
                                     <div class="count_button">
-                                        <p class="btn_text">팔로워</p>
+                                        <p class="btn_text">追随者</p>
                                         <div class="count_button_two">
                                             <p class="btn_text_two">{{ ul.followee.count }}</p>
                                         </div>
