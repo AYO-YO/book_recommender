@@ -58,59 +58,6 @@ def get_bestseller_list():
     return bestseller_list
 
 
-def get_recommend_list(request, id):
-    df = pd.DataFrame(list(BookData.objects.all().values()))
-    user = request.user.is_authenticated
-    if not user:
-        return redirect('/sign-in')
-
-    user_id = UserModel.objects.get(id=request.user.id)
-    selected_book = BookData.objects.get(id=id)
-    page = request.GET.get('page', 1)
-    profile_book = Like.objects.filter(user_id=user_id)
-    model = gensim.models.Doc2Vec.load('book/doc2vec/model.doc2vec')
-
-    # 标记选定的图书
-    tmp = jieba.lcut(selected_book.title)
-    tmp2 = jieba.lcut(selected_book.description)
-    tokens = []
-
-    for word in tmp + tmp2:
-        if word != '|':
-            tokens.append(word)
-
-    inferred_doc_vec = model.infer_vector(tokens)
-    most_similar_docs = model.docvecs.most_similar([inferred_doc_vec], topn=101)
-    recommend_list = []
-
-    for index, similarity in most_similar_docs:
-
-        # 自己被排除在推荐书之外
-        if df['isbn'][index] == selected_book.isbn:
-            continue
-
-        recommend_list.append(
-            {'id': df['id'][index], 'isbn': df['isbn'][index], 'title': df['title'][index],
-             'img_url': df['img_url'][index],
-             'description': df['description'][index], 'author': df['author'][index], 'price': df['price'][index],
-             'pub_date_2': df['pub_date_2'][index],
-             'publisher': df['publisher'][index],
-             'proxy_img_url': BookData.objects.get(id=df['id'][index]).proxy_img_url}
-        )
-
-    paginator = Paginator(recommend_list, 20)
-    try:
-        recommend_list = paginator.page(page)
-    except PageNotAnInteger:
-        recommend_list = paginator.page(1)
-    except EmptyPage:
-        recommend_list = paginator.page(paginator.num_pages)
-
-    return render(request, 'home.html',
-                  {'all_book': recommend_list, 'profile_book': profile_book, 'selected_book': selected_book.title,
-                   'bestseller_list': get_bestseller_list()})
-
-
 def get_book(request):
     user = request.user.is_authenticated
     if not user:
@@ -244,11 +191,12 @@ def write_review(request, id):
             review = request.POST.get("my-review", "")
             score = request.POST.get("score", 5)
             book = BookData.objects.get(id=id)
-            RV = Review.objects.create(
-                content=review,
+            RV, _ = Review.objects.update_or_create(
                 writer=request.user,
                 book=book,
-                score=score
+                defaults=dict(
+                    content=review,
+                    score=score)
             )
 
             if RV:
