@@ -5,13 +5,14 @@ from django.contrib import auth  # 用户自上而下功能
 from django.contrib.auth import get_user_model  # 检查用户是否存在的函数
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.db.models import Avg
 
 from book.models import Like, Review, BookData
 from .models import UserModel
 
 
 def sign_up_view(request):
-    first_like = BookData.objects.filter(id__range=(1, 70))
+    first_like = BookData.objects.annotate(avg_score=Avg("reviews__score")).order_by("-avg_score")[:50]
 
     if request.method == 'GET':
         user = request.user.is_authenticated  # 检查登录用户是否请求
