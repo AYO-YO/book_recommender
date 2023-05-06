@@ -117,12 +117,13 @@ def get_book(request):
         return redirect('/sign-in')
 
     if request.method == 'GET':
-        user_id = UserModel.objects.get(id=request.user.id)
+        user = UserModel.objects.get(id=request.user.id)
         book_list = BookData.objects.all()
         total_book = book_list.count()
         search_text = request.GET.get('search_text', '')
         page = request.GET.get('page', 1)
-        profile_book = Like.objects.filter(user_id=user_id)
+        profile_book = user.get_recommends_book_model_and_score()
+        print(profile_book)
 
         if search_text != '':
             if len(search_text) < 2:
@@ -360,7 +361,11 @@ class ProxyImageView(View):
     def get(self, req):
         url = req.GET.get('url')
         headers = {
-            'referer': 'https://www.dushu.com/'
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.68',
+            'referer': ''
         }
+        if "img.dushu.com" in url:
+            headers['referer'] = 'https://www.dushu.com/'
+
         r = requests.get(url, headers=headers, timeout=3)
         return HttpResponse(r.content, content_type=r.headers.get('Content-Type', 'image/jpeg'))

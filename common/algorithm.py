@@ -51,6 +51,8 @@ def recommend_list(data, sames_matrix, user, depth=3, count=10):
                 rank.setdefault(j, 0)
                 # 预测兴趣度 = 评分 × 相似度
                 rank[j] += float(score) * w
+    print("---3.获取推荐列表---")
+    print(sorted(rank.items(), key=lambda x: x[1], reverse=True)[0:count])
     return sorted(rank.items(), key=lambda x: x[1], reverse=True)[0:count]
 
 
@@ -67,6 +69,6 @@ if __name__ == '__main__':
     W = similarity(data)  # 计算物品相似矩阵
     ed = time.time()
     print(f"耗时：{ed - st}")
-    recommend_list(data, W, '用户A', 3, 10)  # 推荐
+    print(recommend_list(data, W, '用户A', 3, 10))  # 推荐
     ed2 = time.time()
     print(f"耗时：{ed2 - ed}")
