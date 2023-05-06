@@ -357,7 +357,7 @@
 .profile_review_content {
     font-family: 'Noto Serif KR', serif;
     flex-shrink: 0;
-    width: 800px;
+    width: 600px;
     height: 30px;
 }
 
@@ -370,7 +370,7 @@
     text-align: left;
     text-decoration: none;
     display: inline-block;
-    width: 800px;
+    width: 600px;
     border: none;
     border-radius: 4px;
     background-image: url("https://cdn.dribbble.com/users/59100/screenshots/14892346/media/77afcf3d102cb8d87ff4460c046d6c78.jpg?compress=1&resize=1200x900&vertical=top");
@@ -408,4 +408,9 @@
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     cursor: pointer;
     transition: 0.5s;
+}
+
+
+.profile_review_title_widen {
+    width: 300px;
 }

@@ -94,17 +94,31 @@
                     {#审查迭代的空间#}
                     {% for my_review in profile_review %}
                         <div class="profile_review">
+                            <div class="profile_review_date profile_review_title_widen">
+                                <a style="text-decoration: none; color: black"
+                                   href="/book/{{ my_review.book_id.pk }}">
+                                    <button class="profile_review_date_button profile_review_title_widen">
+                                        {{ my_review.book.title }}
+                                    </button>
+                                </a>
+                            </div>
                             <div class="profile_review_title">
                                 <a style="text-decoration: none; color: black"
                                    href="/book/{{ my_review.book_id.pk }}">
                                     <button class="profile_review_title_button">
-                                        {{ my_review.book_id.title }}
+                                        {% for i in "12345" %}
+                                            {% if i <= my_review.score|stringformat:"d" %}
+                                                ★
+                                            {% else %}
+                                                ☆
+                                            {% endif %}
+                                        {% endfor %}
                                     </button>
                                 </a>
                             </div>
                             <div class="profile_review_content">
                                 <a style="text-decoration: none; color: black"
-                                   href="/book/{{ my_review.book_id.pk }}">
+                                   href="/book/{{ my_review.book.pk }}">
                                     <button class="profile_review_content_button">
                                         {{ my_review.content }}
                                     </button>
@@ -112,7 +126,7 @@
                             </div>
                             <div class="profile_review_date">
                                 <a style="text-decoration: none; color: black"
-                                   href="/book/{{ my_review.book_id.pk }}">
+                                   href="/book/{{ my_review.book.pk }}">
                                     <button class="profile_review_date_button">
                                         {{ my_review.created_at }}
                                     </button>
