@@ -12,7 +12,7 @@
         <div class="container container_login">
             <div style="width: 100%; text-align: center">
             <img style="height:100px; margin-top: 20px;"
-             src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fcsp6kt%2FbtrEpBHGg8P%2FOeq6kOj6LD7yrMsaVPk9yK%2Fimg.png">
+             src="{% static 'image/logo.png' %}">
             </div>
             <hr>
 
@@ -34,9 +34,7 @@
                     {% endif %}
                     <div class="button_signin" style="text-align: center">
                         <button type="submit" class="btn_login">登录</button>
-                        {% load socialaccount %}
-                        <a class="btn_naver" href=" {% provider_login_url 'naver' %}">登录</a>
-                        <a href="/sign-up" class="btn_to_signup">跳转到会员注册页面</a>
+                        <a href="/sign-up" class="btn_to_signup">去注册</a>
                     </div>
                 </form>
 

@@ -4,7 +4,7 @@
 
 
 .hi {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("https://cdn.dribbble.com/userupload/2839838/file/original-1de4b8b7f37c9bb8cf6f2bcb83a27d61.png?compress=1&resize=2400x1800");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("../image/bg_book_bar.jpg");
     background-position: center;
     background-size: 100%;
 
@@ -16,10 +16,8 @@
     width: auto;
 }
 
-.card{
-    background-image: url("https://cdn.dribbble.com/users/1286672/screenshots/18460920/media/3e629acbaa9c8c9eecc26b9615ebbf77.gif");
-    /*background-image: url("https://cdn.dribbble.com/users/1870665/screenshots/18385863/media/6ed4e26e54210b9f2bd1f0b1ba7fd3f4.png?compress=1&resize=1600x1200&vertical=top");*/
-    background-position: center;
+.card {
+    background: linear-gradient(rgba(161, 244, 197, .3), rgba(13, 202, 240, .5));
     background-size: 90%;
 }
 
@@ -169,7 +167,7 @@
 }
 
 
-.count_button_box{
+.count_button_box {
     display: flex;
     flex-direction: row-reverse;
     justify-content: start;

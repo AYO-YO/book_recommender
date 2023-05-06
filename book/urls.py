@@ -15,4 +15,5 @@ urlpatterns = [
     path('book/review/edit/<int:id>', views.edit_review, name='edit_review'),
     path('book/review/edit/update/<int:id>', views.update, name='update'),
     path('book/likes/<int:book_id>', views.likes, name='likes'),
+    path('proxy/image', views.ProxyImageView.as_view(), name='image'),
 ]

@@ -40,8 +40,8 @@
 
                     {% for bs in bestseller %}
                         <div style="text-align: center">
-                            <img class=bs_img src="{{ bs.img_url }}"><br>
-                            <input type='radio' name='book' value='{{ bs.master_seq }}'/>
+                            <img class=bs_img src="{{ bs.proxy_img_url }}"><br>
+                            <input type='radio' name='book' value='{{ bs.isbn }}'/>
                             <br>
                             <span class="bestseller_title">{{ bs.title }}</span>
                             <br>

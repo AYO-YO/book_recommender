@@ -1,24 +1,24 @@
-import gensim.models
-from django.contrib import messages
-from django.http import HttpResponse, JsonResponse
-from django.core.exceptions import ValidationError
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.db.models import Q
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-import MeCab
-import pandas as pd
-from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
+
+import gensim.models
+import jieba
+import pandas as pd
+import requests
+from bs4 import BeautifulSoup
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db.models import Q
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import redirect, render
+from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 from book.models import BookData, Like, Review
-import requests
-from bs4 import BeautifulSoup
-
 from user.models import UserModel
 
-mecab = MeCab.Tagger()
+jieba.initialize()
 
 
 def loading(request):
@@ -47,7 +47,7 @@ def home(request):
 
 
 def get_bestseller_list():
-    bestseller_list = BookData.objects.filter(master_seq__range=['1', '70'])
+    bestseller_list = BookData.objects.filter(isbn__range=['1', '70'])
     # paginator = Paginator(bestseller_list, 10)
     # try:
     #     bestseller_list = paginator.page(page)
@@ -71,15 +71,13 @@ def get_recommend_list(request, id):
     model = gensim.models.Doc2Vec.load('book/doc2vec/model.doc2vec')
 
     # 标记选定的图书
-    tmp = mecab.parse(selected_book.title).split()
-    tmp.append('|')
-    tmp2 = mecab.parse(selected_book.description).split()
-    tmp3 = tmp + tmp2
+    tmp = jieba.lcut(selected_book.title)
+    tmp2 = jieba.lcut(selected_book.description)
     tokens = []
 
-    for k in range(0, len(tmp3) - 2, 2):
-        if 'EOS' not in tmp3[k]:
-            tokens.append(tmp3[k])
+    for word in tmp + tmp2:
+        if word != '|':
+            tokens.append(word)
 
     inferred_doc_vec = model.infer_vector(tokens)
     most_similar_docs = model.docvecs.most_similar([inferred_doc_vec], topn=101)
@@ -88,15 +86,17 @@ def get_recommend_list(request, id):
     for index, similarity in most_similar_docs:
 
         # 自己被排除在推荐书之外
-        if df['master_seq'][index] == selected_book.master_seq:
+        if df['isbn'][index] == selected_book.isbn:
             continue
 
         recommend_list.append(
-            {'id': df['id'][index], 'master_seq': df['master_seq'][index], 'title': df['title'][index],
+            {'id': df['id'][index], 'isbn': df['isbn'][index], 'title': df['title'][index],
              'img_url': df['img_url'][index],
              'description': df['description'][index], 'author': df['author'][index], 'price': df['price'][index],
              'pub_date_2': df['pub_date_2'][index],
-             'publisher': df['publisher'][index]})
+             'publisher': df['publisher'][index],
+             'proxy_img_url': BookData.objects.get(id=df['id'][index]).proxy_img_url}
+        )
 
     paginator = Paginator(recommend_list, 20)
     try:
@@ -173,35 +173,45 @@ def detail_book(request, id):
     if not user:
         return redirect('/sign-in')
     book = BookData.objects.get(id=id)
-    book_review = Review.objects.filter(book_master_seq=book).order_by('-created_at')
+    book_review = Review.objects.filter(book_id=book).order_by('-created_at')
     book_title = book.title
 
-    if "-" in book_title :
+    if "-" in book_title:
         book_title = book_title.split('-')[0]
         book_sectitle = book.title
         book_sectitle = book_sectitle.split('-')[1]
         if "&lt;" in book_sectitle:
-            book_sectitle = book_sectitle.replace("&lt;","<")
+            book_sectitle = book_sectitle.replace("&lt;", "<")
             if "&gt;" in book_sectitle:
-                book_sectitle = book_sectitle.replace("&gt;",">")
-    elif ":" in book_title :
+                book_sectitle = book_sectitle.replace("&gt;", ">")
+    elif ":" in book_title:
         book_title = book_title.split(':')[0]
         book_sectitle = book.title
         book_sectitle = book_sectitle.split(':')[1]
         if "&lt;" in book_sectitle:
-            book_sectitle = book_sectitle.replace("&lt;","<")
+            book_sectitle = book_sectitle.replace("&lt;", "<")
             if "&gt;" in book_sectitle:
-                book_sectitle = book_sectitle.replace("&gt;",">")
-    else :
+                book_sectitle = book_sectitle.replace("&gt;", ">")
+    elif "：" in book_title:
+        book_title = book_title.split('：')[0]
+        book_sectitle = book.title
+        book_sectitle = book_sectitle.split('：')[1]
+        if "&lt;" in book_sectitle:
+            book_sectitle = book_sectitle.replace("&lt;", "<")
+            if "&gt;" in book_sectitle:
+                book_sectitle = book_sectitle.replace("&gt;", ">")
+    else:
         book_title = book_title.replace(" ", "")
-        book_sectitle = '✖️'
+        book_sectitle = ''
     if request.user.is_authenticated:
         like_exist = (Like.objects.filter(user=request.user, book=book)).exists()
         return render(request, 'detail.html',
-                      {'book': book, 'reviews': book_review, 'like_exist': like_exist, 'book_title': book_title,'book_sectitle':book_sectitle})
+                      {'book': book, 'reviews': book_review, 'like_exist': like_exist, 'book_title': book_title,
+                       'book_sectitle': book_sectitle})
     else:
         return render(request, 'detail.html',
-                      {'book': book, 'reviews': book_review, 'like_exist': False, 'book_title': book_title,'book_sectitle':book_sectitle})
+                      {'book': book, 'reviews': book_review, 'like_exist': False, 'book_title': book_title,
+                       'book_sectitle': book_sectitle})
 
 
 def insert_book_data(request):
@@ -210,7 +220,7 @@ def insert_book_data(request):
     for index in range(0, len(df['title'])):
         try:
             book_data = BookData()
-            book_data.master_seq = df['master_seq'][index]
+            book_data.isbn = df['isbn'][index]
             book_data.title = df['title'][index]
             book_data.img_url = df['img_url'][index]
             book_data.description = df['description'][index]
@@ -231,17 +241,17 @@ def write_review(request, id):
     if request.method == 'POST':
         if request.user.is_authenticated:
             review = request.POST.get("my-review", "")
-            current_Book = BookData.objects.get(id=id)
-            RV = Review()
-            RV.content = review
-            RV.writer = request.user
-            RV.book_master_seq = current_Book
-            RV.save()
+            book = BookData.objects.get(id=id)
+            RV = Review.objects.create(
+                content=review,
+                writer=request.user,
+                book=book
+            )
 
             if RV:
                 messages.warning(request, "成功撰写评论")
 
-            return redirect('/book/' + str(current_Book.id))
+            return redirect('/book/' + str(book.id))
         else:
             messages.warning(request, "需要登录")
             return redirect('sign-in')
@@ -250,7 +260,7 @@ def write_review(request, id):
 @login_required
 def delete_review(request, id):
     rv = Review.objects.get(id=id)
-    page = rv.book_master_seq.id
+    page = rv.book_id.id
     rv.delete()
     messages.warning(request, "已删除评论")
     return redirect('/book/' + str(page))
@@ -267,7 +277,7 @@ def edit_review(request, id):
 
 def update(request, id):
     review = Review.objects.get(id=id)
-    page = review.book_master_seq.id
+    page = review.book_id.id
     review.content = request.POST.get('my-review')
     review.save()
     messages.warning(request, "已修改评论")
@@ -333,7 +343,7 @@ def insert_crawling_data(request):
 
     for index in range(0, len(bestseller)):
         book_data1 = BookData()
-        book_data1.master_seq = bestseller[index]['book_number']
+        book_data1.isbn = bestseller[index]['book_number']
         book_data1.title = bestseller[index]['title']
         book_data1.img_url = bestseller[index]['img']
         book_data1.description = bestseller[index]['description']
@@ -344,3 +354,13 @@ def insert_crawling_data(request):
         book_data1.save()
 
     return redirect('/book')
+
+
+class ProxyImageView(View):
+    def get(self, req):
+        url = req.GET.get('url')
+        headers = {
+            'referer': 'https://www.dushu.com/'
+        }
+        r = requests.get(url, headers=headers, timeout=3)
+        return HttpResponse(r.content, content_type=r.headers.get('Content-Type', 'image/jpeg'))

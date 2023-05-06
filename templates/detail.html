@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
     <link rel="stylesheet" href="{% static 'css/detail.css' %}">
     <script src="https://kit.fontawesome.com/6a078ab7ec.js" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
             crossorigin="anonymous"></script>
@@ -53,7 +53,7 @@
                     <div class="book" style="display: flex; flex-direction: column">
                         <div class="book-img col-12 col-md align-self-center"
                              style="width:200px; height: 240px; margin-right: 30px; display: flex; flex-direction: row">
-                            <img src={{ book.img_url }} class="thumb-book-img" id="thumb-book-img"
+                            <img src={{ book.proxy_img_url }} class="thumb-book-img" id="thumb-book-img"
                                  style="width: 100%;height: 100%">
                             <div class="book-btn position-absolute row align-items-center text-center"
                                  style="bottom: 30rem; left: 60%; transform: translateX(-50%);">
@@ -108,7 +108,7 @@
                                 <div class="media-body">
                                     <h5 class="mt-0"> {{ rv.content }} </h5>
                                     <span> {{ rv.writer }} </span>
-                                    <span> - {{ rv.created_at | timesince }} 全</span>
+                                    <span> - {{ rv.created_at | timesince }} 前</span>
                                 </div>
                                 {% if rv.writer == user %}
                                     <div style="float: right">

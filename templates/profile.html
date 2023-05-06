@@ -8,7 +8,7 @@
 {% block style %}
     <link rel="stylesheet" href="{% static 'css/profile.css' %} ">
     <script src="https://kit.fontawesome.com/6a078ab7ec.js" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/3.6.0/jquery.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Serif+KR:wght@200&family=Yeon+Sung&display=swap"
           rel="stylesheet">
 
@@ -20,7 +20,7 @@
             <div class="profile_top-area" id="profile_top-area" name="profile_top-area" style="">
                 {% for my_follow in profile_user %}
                     <div class="profile_follower">
-                        追随者
+                        粉丝
                         <a style="text-decoration: none; color: black" href="/user">
                             <div class="follower_num">
                                 {{ my_follow.followee.count }}
@@ -45,7 +45,7 @@
                 </div>
                 {% for my_follow in profile_user %}
                     <div class="profile_following">
-                        下列的
+                        已关注
                         <a style="text-decoration: none; color: black" href="/user">
                             <div class="following_num">
                                 {{ my_follow.follow.count }}
@@ -68,7 +68,7 @@
                         <div class="profile_book">
                             <div class="profile_book_image_box">
                                 <a href="/book/{{ my_book.book.pk }}">
-                                    <img class="profile_book_image" src="{{ my_book.book.img_url }}">
+                                    <img class="profile_book_image" src="{{ my_book.book.proxy_img_url }}">
                                 </a>
                             </div>
                             <div class="profile_book_name_box">
@@ -96,15 +96,15 @@
                         <div class="profile_review">
                             <div class="profile_review_title">
                                 <a style="text-decoration: none; color: black"
-                                   href="/book/{{ my_review.book_master_seq.pk }}">
+                                   href="/book/{{ my_review.book_id.pk }}">
                                     <button class="profile_review_title_button">
-                                        {{ my_review.book_master_seq.title }}
+                                        {{ my_review.book_id.title }}
                                     </button>
                                 </a>
                             </div>
                             <div class="profile_review_content">
                                 <a style="text-decoration: none; color: black"
-                                   href="/book/{{ my_review.book_master_seq.pk }}">
+                                   href="/book/{{ my_review.book_id.pk }}">
                                     <button class="profile_review_content_button">
                                         {{ my_review.content }}
                                     </button>
@@ -112,7 +112,7 @@
                             </div>
                             <div class="profile_review_date">
                                 <a style="text-decoration: none; color: black"
-                                   href="/book/{{ my_review.book_master_seq.pk }}">
+                                   href="/book/{{ my_review.book_id.pk }}">
                                     <button class="profile_review_date_button">
                                         {{ my_review.created_at }}
                                     </button>

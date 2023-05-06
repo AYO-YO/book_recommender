@@ -5,9 +5,10 @@
 {% endblock %}
 {% load static %}
 {% block style %}
+
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
     <script src="https://kit.fontawesome.com/6a078ab7ec.js" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/3.6.0/jquery.min.js"></script>
     <script>
         function backToTop() {
             document.body.scrollTop = 0;
@@ -60,7 +61,7 @@
                                             id="thumb-book-img"
                                             style=""></a>
                                 {% else %}
-                                    <a href="/book/{{ bestseller.id }}"><img src="{{ bestseller.img_url }}"
+                                    <a href="/book/{{ bestseller.id }}"><img src="{{ bestseller.proxy_img_url }}"
                                                                              class="bestseller-thumb-book-img"
                                                                              id="thumb-book-img"
                                                                              style=""></a>
@@ -111,7 +112,7 @@
                                                         id="thumb-book-img"
                                                         style=""></a>
                                             {% else %}
-                                                <a href="/book/{{ book.book.id }}"><img src="{{ book.book.img_url }}"
+                                                <a href="/book/{{ book.book.id }}"><img src="{{ book.book.proxy_img_url }}"
                                                                                         class="thumb-book-img"
                                                                                         id="thumb-book-img"
                                                                                         style=""></a>
@@ -186,7 +187,7 @@
                                         style="font-weight: bold; color: black">选择 :</span> {{ selected_book }}</p>
                             {% else %}
                                 <p class="top-title">全书</p>
-                                <p style="font-size: smaller; color: gray">枪 {{ total_book }} 书的书</p>  {# TODO #}
+                                <p style="font-size: smaller; color: gray">共 {{ total_book }} 本书</p>  {# TODO #}
                             {% endif %}
                         </div>
                         <div class="body-area">
@@ -203,7 +204,7 @@
                                                                                    id="thumb-book-img"
                                                                                    style=""></a>
                                             {% else %}
-                                                <a href="/book/{{ book.id }}"><img src="{{ book.img_url }}"
+                                                <a href="/book/{{ book.id }}"><img src="{{ book.proxy_img_url }}"
                                                                                    class="thumb-book-img"
                                                                                    id="thumb-book-img"
                                                                                    style=""></a>

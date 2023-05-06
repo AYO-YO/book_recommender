@@ -1,19 +1,19 @@
 # user/views.py
+# user/views.py
+from django.contrib import auth  # 用户自上而下功能
+# user/views.py
+from django.contrib.auth import get_user_model  # 检查用户是否存在的函数
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
 from book.models import Like, Review, BookData
 from .models import UserModel
-from django.http import HttpResponse
-# user/views.py
-from django.contrib.auth import get_user_model  # 检查用户是否存在的函数
-# user/views.py
-from django.contrib import auth  # 用户自上而下功能
-from django.contrib.auth.decorators import login_required
+
 
 def sign_up_view(request):
-    first_like=BookData.objects.filter(master_seq__range=(1,70))
+    first_like = BookData.objects.filter(id__range=(1, 70))
 
-    if request.method == 'GET': 
+    if request.method == 'GET':
         user = request.user.is_authenticated  # 检查登录用户是否请求
         if user:  # 如果您已登录
             return redirect('/')
@@ -44,7 +44,7 @@ def sign_up_view(request):
 
                 first_book=Like()
                 like_users_id=UserModel.objects.values().order_by('-id')
-                like_book_id=BookData.objects.filter(master_seq=int(my_book)).values()
+                like_book_id=BookData.objects.filter(isbn=int(my_book)).values()
                 first_book.user_id=like_users_id[0]['id']
                 first_book.book_id= list(like_book_id)[0]['id']
 
