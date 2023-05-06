@@ -242,11 +242,13 @@ def write_review(request, id):
     if request.method == 'POST':
         if request.user.is_authenticated:
             review = request.POST.get("my-review", "")
+            score = request.POST.get("score", 5)
             book = BookData.objects.get(id=id)
             RV = Review.objects.create(
                 content=review,
                 writer=request.user,
-                book=book
+                book=book,
+                score=score
             )
 
             if RV:
@@ -261,7 +263,7 @@ def write_review(request, id):
 @login_required
 def delete_review(request, id):
     rv = Review.objects.get(id=id)
-    page = rv.book_id.id
+    page = rv.book_id
     rv.delete()
     messages.warning(request, "已删除评论")
     return redirect('/book/' + str(page))

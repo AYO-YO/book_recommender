@@ -100,7 +100,6 @@
             <div class="footer-area" style="margin-top: 50px">
                 <h5>用户评论</h5>
                 <hr>
-                <!-- 循环会去哪里 -->
                 {% for rv in reviews %}
                     <div class="row">
                         <div class="col-md-12">
@@ -108,6 +107,15 @@
                                 <div class="media-body">
                                     <h5 class="mt-0"> {{ rv.content }} </h5>
                                     <span> {{ rv.writer }} </span>
+                                    <span> -
+                                        {% for i in "12345" %}
+                                            {% if i <= rv.score|stringformat:"d" %}
+                                                ★
+                                            {% else %}
+                                                ☆
+                                            {% endif %}
+                                        {% endfor %}
+                                    </span>
                                     <span> - {{ rv.created_at | timesince }} 前</span>
                                 </div>
                                 {% if rv.writer == user %}
@@ -131,6 +139,13 @@
                     {% csrf_token %}
                     <textarea class="form-control" cols="30" rows="5" id='my-review' name='my-review'
                               placeholder="请填写评论" style="resize:none;"></textarea>
+                    <select name="score" id="score" class="form-select-sm">
+                        <option value="1">1 分</option>
+                        <option value="2">2 分</option>
+                        <option value="3">3 分</option>
+                        <option value="4">4 分</option>
+                        <option value="5" selected>5 分</option>
+                    </select>
                     <button class="btn btn-outline-secondary" type="submit">提交</button>
                 </form>
             </div>
