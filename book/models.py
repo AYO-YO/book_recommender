@@ -1,5 +1,5 @@
-from django.db import models
 from django.conf import settings
+from django.db import models
 
 
 # Create your models here.
@@ -51,6 +51,7 @@ class Review(models.Model):
     content = models.TextField('评论内容')
     created_at = models.DateTimeField('创建时间', auto_now_add=True)
     updated_at = models.DateTimeField('更新时间', auto_now=True)
+    score = models.IntegerField("图书评分", default=5)
     book = models.ForeignKey(BookData, on_delete=models.CASCADE, related_name='reviews', verbose_name='图书')
     writer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='reviews',
                                verbose_name='评论者')
