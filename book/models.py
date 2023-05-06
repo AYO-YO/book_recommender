@@ -41,6 +41,11 @@ class Like(models.Model):
     book = models.ForeignKey(BookData, on_delete=models.CASCADE, related_name='likes', verbose_name='图书')
     created_at = models.DateTimeField('创建时间', auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        # 喜欢图书时，自动给该图书添加一条空评价
+        # 给对应的用户和图书添加一条默认评价，解决冷启动问题
+        Review.objects.update_or_create(writer=self.user, book=self.book, defaults={'score': 5})
 
 class Review(models.Model):
     class Meta:

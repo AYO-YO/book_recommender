@@ -49,7 +49,7 @@
         {% endfor %}
         <div class="container timeline-container" style="">
             <div class="bestseller-area">
-                <p class="top-title">畅销书 70</p>
+                <p class="top-title">格林童趣</p>
                 <div class="bestseller">
                     {% for bestseller in bestseller_list %}
                         <div class="bestseller-book">
@@ -178,14 +178,8 @@
                 <div id="right-area" class="col-md-6">
                     <div class="right-main" style="">
                         <div class="top-area" style="">
-                            {% if request.resolver_match.view_name == 'get_recommend_list' %}
-                                <p class="top-title">推荐阅读 100</p>
-                                <p style="font-size: smaller; color: gray"><span
-                                        style="font-weight: bold; color: black">选择 :</span> {{ selected_book }}</p>
-                            {% else %}
-                                <p class="top-title">全书</p>
-                                <p style="font-size: smaller; color: gray">共 {{ total_book }} 本书</p>  {# TODO #}
-                            {% endif %}
+                            <p class="top-title">最热门的书</p>
+                            <p style="font-size: smaller; color: gray">共 {{ total_book }} 本书</p>
                         </div>
                         <div class="body-area">
                             <div class="book-area" id="book-area" name="book-area"

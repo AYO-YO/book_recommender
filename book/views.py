@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.db.models import Q
+from django.db.models import Q, Avg
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.views import View
@@ -65,7 +65,8 @@ def get_book(request):
 
     if request.method == 'GET':
         user = UserModel.objects.get(id=request.user.id)
-        book_list = BookData.objects.all()
+        book_list = BookData.objects.annotate(avg_score=Avg("reviews__score")).order_by("-avg_score")
+
         total_book = book_list.count()
         search_text = request.GET.get('search_text', '')
         page = request.GET.get('page', 1)
