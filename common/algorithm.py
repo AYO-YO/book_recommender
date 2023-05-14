@@ -1,5 +1,6 @@
 import time
 from math import sqrt
+from rich import print
 
 
 def similarity(data):
@@ -16,8 +17,8 @@ def similarity(data):
                     C[i].setdefault(j, 0)
                     C[i][j] += 1
     print("---1.构造的共现矩阵---")
-    print('N:', N)
-    print('C', C)
+    print('N(喜欢图书i的总人数):', N)
+    print('C(喜欢图书i也喜欢图书j的总人数):', C)
     # 2 计算物品与物品的相似矩阵
     W = {}
     for i, item in C.items():
@@ -50,7 +51,10 @@ def recommend_list(data, sames_matrix, user, depth=3, count=10):
             if j not in data[user].keys():
                 rank.setdefault(j, 0)
                 # 预测兴趣度 = 评分 × 相似度
-                rank[j] += float(score) * w
+                rank[j] = max(rank.get(j, 0), float(score) * w)
+    print("---完整评分矩阵---")
+    print(rank)
+
     print("---3.获取推荐列表---")
     print(sorted(rank.items(), key=lambda x: x[1], reverse=True)[0:count])
     return sorted(rank.items(), key=lambda x: x[1], reverse=True)[0:count]

@@ -1,7 +1,5 @@
 from datetime import datetime
 
-import gensim.models
-import jieba
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
@@ -17,9 +15,6 @@ from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 from book.models import BookData, Like, Review
 from user.models import UserModel
-
-jieba.initialize()
-
 
 def loading(request):
     user = request.user.is_authenticated

@@ -50,8 +50,7 @@ def save_to_csv(ran):
     csv_name = f'./book_csv_{ran[0]}-{ran[1]}.csv'
     f = open(csv_name, 'w', newline='')
     writer = csv.writer(f)
-    writer.writerow(['master_seq', 'title,author', 'publisher',
-                    'price', 'img_url', 'description', 'pub_date_2'])
+    # writer.writerow(['master_seq', 'title,author', 'publisher', 'price', 'img_url', 'description', 'pub_date_2'])
     for p in range(*ran):
         urls = get_page_book_url(p)
         for url in urls:
